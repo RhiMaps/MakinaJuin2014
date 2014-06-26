@@ -20,13 +20,6 @@ function init(){
       });
   mapqLayer.addTo(map);
 
-  //      .openPopup();
-  var mark1 = L.marker([ 43.59, 1.45]).bindPopup('mark1');
-  var mark2 = L.marker([ 43.49, 1.55]).bindPopup('mark2');
-  var mark3 = L.marker([ 43.39, 1.65]).bindPopup('mark3');
-  var mark4 = L.marker([ 43.29, 1.75]).bindPopup('mark4');
-  var markGroup = L.layerGroup( [mark1,mark2,mark3,mark4]);
-
 
 
   var elmOptions = {
@@ -64,12 +57,17 @@ function init(){
     }
   });
 
-  var geofLayer = L.tileLayer.wms("https://api.geofoncier.fr:443/referentielsoge/ogc/wxs?SERVICE=WMS",{
-      layers: 'DOSSIERS_FXX',
-      format: 'image/png',
-      transparent: true,
-      attribution: 'geofoncier'
-      });
+  var burLayer = L.geoJson( bureaux, {
+    onEachFeature: onVoteFeature
+  });
+  burLayer.addTo( map);
+
+  function onVoteFeature(feature, layer){
+    layer.on('mouseover', function(e){
+      $('#info').html(feature.properties.NOM);
+    });
+  }
+
 
   var baseLayers = {
     "MapBox": mapqLayer,
@@ -79,11 +77,10 @@ function init(){
   var overlays = {
     "elementaires": elmLayer,
     "maternelles": matLayer,
-    "geofoncier": geofLayer,
-    "marqueurs": markGroup,
+    "bureaux": burLayer,
   };
 
-  L.control.layers(baseLayers, overlays).addTo(map);
+  L.control.layers(baseLayers, overlays).setPosition('bottomleft').addTo(map);
 
 
 
