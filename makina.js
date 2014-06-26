@@ -64,7 +64,7 @@ function init(){
 
   function onVoteFeature(feature, layer){
     layer.on('mouseover', function(e){
-      $('#info').html(feature.properties.NOM);
+      legend.update(layer.feature.properties);
     });
   }
 
@@ -81,6 +81,20 @@ function init(){
   };
 
   L.control.layers(baseLayers, overlays).setPosition('bottomleft').addTo(map);
+
+
+  var legend = L.control( { position: 'topright' });
+
+  legend.onAdd = function(map) {
+    this._div = new L.DomUtil.create('div', 'info');
+    return this._div;
+  }
+
+  legend.update = function(bureau){
+    this._div.innerHTML = '<b>' + bureau.NOM + '</b> (n°'+ bureau.ASSOCIANT+ ')<br />';
+  }
+
+  legend.addTo(map);
 
 
 
