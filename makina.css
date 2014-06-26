@@ -1,0 +1,8 @@
+#map {height: 100%; }
+body {margin:0; height: 100%;}
+body>div { height: 100%}
+html {height: 100%;}
+#btn {position: absolute; bottom: 1em;}
+#des {position: absolute; bottom: 1em; right: 1em}
+#act {position: absolute; bottom: 5em; right: 1em}
+
