@@ -1,18 +1,11 @@
 var z=13;
-var myLL= L.latLng(40.59, 1.45);
+var myLL= L.latLng(43.59, 1.45);
 
 function init(){
 
-  var southWest = L.latLng(43, 1),
-      northEast = L.latLng(44, 2),
-      bounds = L.latLngBounds(southWest, northEast);
 
   // create a map in the "map" div, set the view to a given place and zoom
-  //var map = L.map('map').setView([y, x], z);
     var map = L.map('map', {
-//      minZoom: 8,
-//      maxZoom: 11,
-//      maxBounds: bounds,
       center:myLL,
       zoom:z});
 
@@ -26,14 +19,6 @@ function init(){
       subdomains: ['otile1','otile2','otile3','otile4']
       });
   mapqLayer.addTo(map);
-
-  var geofLayer = L.tileLayer.wms("https://api.geofoncier.fr:443/referentielsoge/ogc/wxs?SERVICE=WMS",{
-      layers: 'DOSSIERS_FXX',
-      format: 'image/png',
-      transparent: true,
-      attribution: 'geofoncier'
-      });
-  geofLayer.addTo(map);
 
   //      .openPopup();
   var mark1 = L.marker([ 43.59, 1.45]).bindPopup('mark1');
@@ -78,6 +63,13 @@ function init(){
         layer.bindPopup(feature.properties.Ecole);
     }
   });
+
+  var geofLayer = L.tileLayer.wms("https://api.geofoncier.fr:443/referentielsoge/ogc/wxs?SERVICE=WMS",{
+      layers: 'DOSSIERS_FXX',
+      format: 'image/png',
+      transparent: true,
+      attribution: 'geofoncier'
+      });
 
   var baseLayers = {
     "MapBox": mapqLayer,
