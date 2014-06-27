@@ -7,3 +7,5 @@ L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png',{
 new L.Control.GeoSearch({
     provider: new L.GeoSearch.Provider.OpenStreetMap()
 }).addTo(map);
+
+var hash = new L.Hash(map);
