@@ -13,26 +13,16 @@ function init(){
   var osmLayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
       attribution: 'OpenStreetMap'
       });
-  osmLayer.addTo(map);
+  //osmLayer.addTo(map);
   var mapqLayer = L.tileLayer('http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png', {
       attribution: 'MapQuest OpenStreetMap',
       subdomains: ['otile1','otile2','otile3','otile4']
       });
-  mapqLayer.addTo(map);
+  //mapqLayer.addTo(map);
 
 
 
-  var elmOptions = {
-      radius: 8,
-      fillColor: "red",
-      color: "black",
-      weight: 1,
-      opacity: 1,
-      fillOpacity: 0.8
-  };
-  var matOptions = {
-      radius: 8,
-      fillColor: "yellow",
+  var ecolesOpt = {
       color: "#000",
       weight: 1,
       opacity: 1,
@@ -41,17 +31,28 @@ function init(){
 
   var elmLayer = L.geoJson(  ecolesElm, {
       pointToLayer: function (feature, latlng) {
-          return L.circleMarker(latlng, elmOptions);
+          return L.circleMarker(latlng, ecolesOpt);
       },
+      style: elmStyle,
     onEachFeature: function (feature, layer) {
         layer.bindPopup(feature.properties.Ecole);
     }
   });
 
+    function elmStyle(feature){
+        var elmRad = feature.properties.Num.replace( (/0*([\d]*)[^\d]*/), "$1" );
+        console.log(elmRad);
+        return { fillColor: "red", radius: elmRad};
+    }
+
   var matLayer = L.geoJson(  ecolesMat, {
       pointToLayer: function (feature, latlng) {
-          return L.circleMarker(latlng, matOptions);
+          var circle = L.circleMarker(latlng, ecolesOpt);
+          var matRad = feature.properties.Num.replace( (/0*([\d]*)[^\d]*/), "$1" );
+          circle.setRadius( matRad);
+          return  circle;
       },
+      style: { fillColor: "yellow" },
     onEachFeature: function (feature, layer) {
         layer.bindPopup(feature.properties.Ecole);
     }
@@ -87,7 +88,8 @@ function init(){
       }
       console.log(gagnant+': '+color);
       var options = {
-          color: "grey",
+          color: "black",
+          weight: 1,
           fillColor: color
       }
       return options;
@@ -95,8 +97,8 @@ function init(){
 
 
   var baseLayers = {
-    "MapBox": mapqLayer,
-    "OSM": osmLayer
+//    "MapBox": mapqLayer,
+//    "OSM": osmLayer
   };
 
   var overlays = {
@@ -120,8 +122,6 @@ function init(){
   }
 
   legend.addTo(map);
-
-
 
 
 }
