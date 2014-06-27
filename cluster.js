@@ -13,7 +13,7 @@ function init(){
   var osmLayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
       attribution: 'OpenStreetMap'
       });
-  //osmLayer.addTo(map);
+  osmLayer.addTo(map);
 
 
 
@@ -25,7 +25,11 @@ function init(){
       layer.bindPopup(txt);
   }
 
-  var clustersLayer = new L.MarkerClusterGroup();
+  var clustersLayer = new L.MarkerClusterGroup({
+    iconCreateFunction: function(cluster) {
+        return new L.DivIcon({ iconSize: L.point(30,30), html: '<img src=\'icon_2024/icon_2024.png\'/>/<b>' + cluster.getChildCount() + '</b>' });
+    }
+});
   clustersLayer.addLayer( matLayer);
 
 

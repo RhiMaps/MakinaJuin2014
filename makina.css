@@ -14,3 +14,13 @@ html {height: 100%;}
   color: #555;
 }
 
+/*
+*/
+img {
+height: 30px;
+width: 30px;
+}
+
+.leaflet-div-icon {
+background-color: red;
+}
