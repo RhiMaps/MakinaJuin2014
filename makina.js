@@ -58,6 +58,7 @@ function init(){
   });
 
   var burLayer = L.geoJson( bureaux, {
+      style: voteStyle,
     onEachFeature: onVoteFeature
   });
   burLayer.addTo( map);
@@ -66,6 +67,30 @@ function init(){
     layer.on('mouseover', function(e){
       legend.update(layer.feature.properties);
     });
+  }
+
+  function voteStyle( feature){
+      var gagnant = feature.properties.GAGNANT;
+      var color;
+      switch( gagnant){
+          case '0':
+              color="red";
+              break;
+          case '1':
+              color="yellow";
+              break;
+          case '2':
+              color="green";
+              break;
+          default:
+              color="lightgrey";
+      }
+      console.log(gagnant+': '+color);
+      var options = {
+          color: "grey",
+          fillColor: color
+      }
+      return options;
   }
 
 
