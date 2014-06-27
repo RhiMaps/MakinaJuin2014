@@ -34,35 +34,37 @@ function init(){
           return L.circleMarker(latlng, ecolesOpt);
       },
       style: elmStyle,
-    onEachFeature: function (feature, layer) {
-        layer.bindPopup(feature.properties.Ecole);
-    }
+    onEachFeature: ecolePopupTxt,
   });
 
     function elmStyle(feature){
-        var elmRad = feature.properties.Num.replace( (/0*([\d]*)[^\d]*/), "$1" );
-        console.log(elmRad);
+        var elmRad = feature.properties.Index;//.replace( (/0*([\d]*)[^\d]*/), "$1" );
         return { fillColor: "red", radius: elmRad};
     }
 
   var matLayer = L.geoJson(  ecolesMat, {
       pointToLayer: function (feature, latlng) {
-          var circle = L.circleMarker(latlng, ecolesOpt);
-          var matRad = feature.properties.Num.replace( (/0*([\d]*)[^\d]*/), "$1" );
-          circle.setRadius( matRad);
-          return  circle;
+          var myIcon = L.icon({
+              iconUrl: 'icon_2024/icon_2024.png',
+              iconSize: [40, 40],
+              iconAnchor: [20, 20],
+              popupAnchor: [0, -20]});
+          var marker = L.marker(latlng, {icon:myIcon} );
+          return  marker;
       },
       style: { fillColor: "yellow" },
-    onEachFeature: function (feature, layer) {
-        layer.bindPopup(feature.properties.Ecole);
-    }
+    onEachFeature: ecolePopupTxt,
   });
+  matLayer.addTo(map)
 
+  function ecolePopupTxt(feature, layer) {
+      var txt=feature.properties.Ecole+": "+feature.properties.Index;
+      layer.bindPopup(txt);
+  }
   var burLayer = L.geoJson( bureaux, {
       style: voteStyle,
     onEachFeature: onVoteFeature
   });
-  burLayer.addTo( map);
 
   function onVoteFeature(feature, layer){
     layer.on('mouseover', function(e){
@@ -86,7 +88,6 @@ function init(){
           default:
               color="lightgrey";
       }
-      console.log(gagnant+': '+color);
       var options = {
           color: "black",
           weight: 1,
